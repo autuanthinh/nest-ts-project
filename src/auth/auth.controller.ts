@@ -10,8 +10,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
-import NewUserDTO from 'src/auth/dto/NewUserDTO';
-import LoginUserResDTO from 'src/auth/dto/LoginUserResDTO';
+import NewUserDTO from 'src/auth/dto/NewUser.dto';
+import LoginUserResDTO from 'src/auth/dto/LoginUserRes.dto';
 import { LocalAuthGuard } from 'src/auth/guards/local-auth.guard';
 import { UserService } from 'src/user/user.service';
 
