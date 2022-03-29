@@ -1,3 +1,5 @@
+import { JoiPipe } from 'nestjs-joi';
+import * as Joi from 'joi';
 import { UserService } from './user.service';
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -13,7 +15,7 @@ export class UserController {
   }
   @Get(':id')
   @UseGuards(JwtAuthGuard)
-  async getUserById(@Param('id') id: number) {
+  async getUserById(@Param('id', new JoiPipe(Joi.number().min(1))) id: number) {
     return this.userService.findOneBy({ id }, { skipPassword: true });
   }
 }
