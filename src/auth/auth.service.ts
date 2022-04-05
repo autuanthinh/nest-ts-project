@@ -1,5 +1,10 @@
 import * as bcrypt from 'bcrypt';
-import { HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/entities/user.entity';
@@ -36,6 +41,21 @@ export class AuthService {
       ...payload,
       token: this.jwtService.sign(payload),
     };
+  }
+
+  async refreshToken(token: string): Promise<any> {
+    try {
+      const obj = this.jwtService.verify(token);
+      const user = await this.usersService.findOneBy({ id: obj.id });
+      const payload: ITokenPayload = { id: user.id, username: user.username };
+
+      return {
+        ...payload,
+        token: this.jwtService.sign(payload),
+      };
+    } catch (error) {
+      throw new UnauthorizedException();
+    }
   }
 
   async createUser(req: LoginUserReqDTO): Promise<LoginUserResDTO> {

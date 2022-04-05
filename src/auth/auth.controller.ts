@@ -32,6 +32,12 @@ export class AuthController {
     return this.authService.login(req.user);
   }
 
+  @Post('refresh-token')
+  @HttpCode(200)
+  async refreshToken(@Body() payload: { token: string }) {
+    return this.authService.refreshToken(payload.token);
+  }
+
   @Post('createUser')
   @UsePipes(new JoiValidationPipe(NewUserDTO.Schema))
   async createUser(@Body() user: NewUserDTO): Promise<LoginUserResDTO> {
