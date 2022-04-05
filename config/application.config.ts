@@ -1,7 +1,9 @@
 export default () => ({
   auth: {
     secret: process.env.AUTH_KEY || '^123.456@abc$',
-    expiresIn: process.env.AUTH_EXP || 1800,
+    expiresIn: process.env.AUTH_EXPIRES_IN || 1800,
+    ignoreExpiration:
+      process.env.AUTH_IGNORE_EXPIRATION === 'true' ? true : false,
   },
   database: {
     postgres: {
