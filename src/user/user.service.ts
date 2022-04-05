@@ -1,4 +1,4 @@
-import { User } from './user.entity';
+import { User } from './entities/user.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
@@ -7,6 +7,8 @@ import {
   ObjectType,
   getRepository,
 } from 'typeorm';
+
+import * as dbUtils from 'src/utils/db';
 
 @Injectable()
 export class UserService {
@@ -17,7 +19,7 @@ export class UserService {
 
   getUsers(): Promise<User[]> {
     return this.usersRepository.find({
-      select: excludeColumns(User, ['password']),
+      select: dbUtils.excludeColumns(User, ['password']),
     });
   }
 
@@ -41,11 +43,3 @@ export class UserService {
     return result;
   }
 }
-
-const excludeColumns = <Entity>(
-  entity: ObjectType<Entity>,
-  columnsToExclude: string[],
-): any =>
-  getRepository(entity)
-    .metadata.columns.map((column) => column.databaseName)
-    .filter((columnName) => !columnsToExclude.includes(columnName));
